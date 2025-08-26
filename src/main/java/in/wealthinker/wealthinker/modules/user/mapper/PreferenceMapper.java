@@ -10,16 +10,20 @@ import in.wealthinker.wealthinker.modules.user.dto.request.UpdatePreferencesRequ
 import in.wealthinker.wealthinker.modules.user.dto.response.PreferenceResponse;
 import in.wealthinker.wealthinker.modules.user.entity.UserPreference;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+        componentModel = "spring",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+)
 public interface PreferenceMapper {
-
-    PreferenceResponse toPreferenceResponse(UserPreference preference);
-
+    @Mapping(target = "hasMarketingConsent", expression = "java(preference.hasMarketingConsent())")
+    @Mapping(target = "allowsDataCollection", expression = "java(preference.allowsDataCollection())")
+    PreferenceResponse toResponse(UserPreference preference);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    void updatePreferencesFromRequest(UpdatePreferencesRequest request, @MappingTarget UserPreference preference);
-
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "updatedBy", ignore = true)
+    void updateFromRequest(UpdatePreferencesRequest request, @MappingTarget UserPreference preference);
 }

@@ -3,12 +3,11 @@ package in.wealthinker.wealthinker.modules.user.dto.request;
 import in.wealthinker.wealthinker.shared.validation.ValidPassword;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class ChangePasswordRequest {
+public class UpdatePasswordRequest {
     @NotBlank(message = "Current password is required")
     private String currentPassword;
 

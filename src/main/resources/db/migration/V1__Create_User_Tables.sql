@@ -73,11 +73,17 @@ CREATE TABLE user_preferences (
 
 -- Create indexes for better performance
 CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_provider ON users(provider, provider_id);
+CREATE INDEX idx_users_username ON users(username);
+CREATE INDEX idx_users_provider_id ON users(provider, provider_id);
 CREATE INDEX idx_users_status ON users(status);
 CREATE INDEX idx_users_role ON users(role);
 CREATE INDEX idx_users_email_verified ON users(email_verified);
 CREATE INDEX idx_users_created_at ON users(created_at);
+
+-- Primary lookup indexes (most critical)
+CREATE INDEX CONCURRENTLY idx_users_email_active ON users(email) WHERE is_active = true;
+CREATE INDEX CONCURRENTLY idx_users_username_active ON users(username) WHERE is_active = true;
+CREATE INDEX CONCURRENTLY idx_users_phone_active ON users(phone_number) WHERE is_active = true;
 
 CREATE INDEX idx_user_profiles_user_id ON user_profiles(user_id);
 CREATE INDEX idx_user_preferences_user_id ON user_preferences(user_id);

@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> {
+public class ApiResponseCustom<T> {
 
     @Builder.Default
     private Boolean success = true;
@@ -63,30 +63,30 @@ public class ApiResponse<T> {
 
     // Factory methods for common response types
 
-    public static <T> ApiResponse<T> success(T data) {
-        return ApiResponse.<T>builder()
+    public static <T> ApiResponseCustom<T> success(T data) {
+        return ApiResponseCustom.<T>builder()
                 .success(true)
                 .data(data)
                 .build();
     }
 
-    public static <T> ApiResponse<T> success(T data, String message) {
-        return ApiResponse.<T>builder()
+    public static <T> ApiResponseCustom<T> success(T data, String message) {
+        return ApiResponseCustom.<T>builder()
                 .success(true)
                 .message(message)
                 .data(data)
                 .build();
     }
 
-    public static <T> ApiResponse<T> error(String message) {
-        return ApiResponse.<T>builder()
+    public static <T> ApiResponseCustom<T> error(String message) {
+        return ApiResponseCustom.<T>builder()
                 .success(false)
                 .message(message)
                 .build();
     }
 
-    public static <T> ApiResponse<T> error(String message, String requestId) {
-        return ApiResponse.<T>builder()
+    public static <T> ApiResponseCustom<T> error(String message, String requestId) {
+        return ApiResponseCustom.<T>builder()
                 .success(false)
                 .message(message)
                 .requestId(requestId)

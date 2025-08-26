@@ -1,6 +1,8 @@
 spring:
   application:
     name: wealthinker
+
+  # Database Configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/wealthinker
     username: postgres
@@ -9,6 +11,11 @@ spring:
     hikari:
       maximum-pool-size: 20
       minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 30000
+      max-lifetime: 1200000
+
+  # JPA Configuration
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,7 +23,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true/
+        format_sql: true
+        jdbc:
+          batch_size: 25
 
   # Flyway Configuration
   flyway:
@@ -33,3 +42,31 @@ spring:
   # Server Configuration
   server:
     port: 8080
+
+  # Mail Configuration (for email functionality)
+  host: ${SMTP_HOST:smtp.gmail.com}
+  port: ${SMTP_PORT:587}
+  username: ${SMTP_USERNAME:your-email@gmail.com}
+  password: ${SMTP_PASSWORD:your-email-password}
+  properties:
+    mail:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+        ssl:
+          trust: smtp.gmail.com
+
+  # Security Configuration
+  security:
+    jwt:
+      secret: wealthinkerSecretKeyForJwtTokenGenerationAndValidation2024!@#$%^&*()!@#
+      expiration: 86400000 # 24 hours
+      refreshExpiration: 604800000 # 7 days
+      issuer: wealthinker
+      audience: wealthinker-users
+
+    user:
+      name: user
+      password: "$2a$10$RNjbcKMWmjYXNLERrTXlKOKpq4EigK1JRBL2xUkP3PdF5ERn0EDbC"
+      roles: ADMIN

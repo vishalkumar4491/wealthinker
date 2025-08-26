@@ -4,11 +4,8 @@ import java.time.LocalDate;
 
 import in.wealthinker.wealthinker.modules.user.entity.UserProfile;
 import in.wealthinker.wealthinker.shared.enums.UserRole;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import in.wealthinker.wealthinker.shared.validation.ValidPassword;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -23,14 +20,6 @@ public class CreateUserRequest {
     @Pattern(regexp = "^[a-zA-Z0-9_.-]+$", message = "Username can only contain letters, numbers, dots, underscores and hyphens")
     private String username;
 
-    @NotBlank(message = "First name is required")
-    @Size(min = 2, max = 50, message = "First name should be between 2 and 50 characters")
-    private String firstName;
-
-    @NotBlank(message = "Last name is required")
-    @Size(min = 2, max = 50, message = "Last name should be between 2 and 50 characters")
-    private String lastName;
-
     @Pattern(
     regexp = "^(?:[6-9]\\d{9}|\\+?[1-9]\\d{1,14})$",
     message = "Phone number must be valid Indian or international format"
@@ -38,16 +27,67 @@ public class CreateUserRequest {
     @Size(min = 10, max = 20)
     private String phoneNumber;
 
+    // Password with custom validation
+    @ValidPassword(message = "Password must meet security requirements")
+    private String password;
+
+    @NotBlank(message = "Password confirmation is required")
+    private String confirmPassword;
+
+    // Personal details
+
+    @NotBlank(message = "First name is required")
+    @Size(min = 2, max = 20, message = "First name should be between 2 and 20 characters")
+    @Pattern(regexp = "^[a-zA-Z\\s'.-]+$", message = "First name can only contain letters, spaces, apostrophes, dots, and hyphens")
+    private String firstName;
+
+    @NotBlank(message = "Last name is required")
+    @Size(min = 2, max = 20, message = "Last name should be between 2 and 20 characters")
+    @Pattern(regexp = "^[a-zA-Z\\s'.-]+$", message = "Last name can only contain letters, spaces, apostrophes, dots, and hyphens")
+    private String lastName;
+
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
 
     private UserProfile.Gender gender;
 
-    @Size(max = 100, message = "Occupation should not exceed 100 characters")
+    @Size(max = 50, message = "Occupation should not exceed 50 characters")
     private String occupation;
 
-    @Size(max = 100, message = "Company should not exceed 100 characters")
+    @Size(max = 50, message = "Company should not exceed 50 characters")
     private String company;
 
     private UserRole role = UserRole.FREE;
+
+    // Terms and conditions acceptance
+    @AssertTrue(message = "You must agree to the terms and conditions")
+    private Boolean agreeToTerms;
+
+    @AssertTrue(message = "You must accept the privacy policy")
+    private Boolean acceptPrivacyPolicy;
+
+    // Marketing consent (GDPR compliance)
+    private Boolean marketingConsent = false; // Default to false (opt-in)
+
+    // Custom validation methods
+
+    @AssertTrue(message = "Passwords do not match")
+    public boolean isPasswordMatching() {
+        return password != null && password.equals(confirmPassword);
+    }
+
+    @AssertTrue(message = "You must be at least 16 years old")
+    public boolean isOfLegalAge() {
+        if (dateOfBirth == null) {
+            return true; // Optional field, let other validations handle
+        }
+        return dateOfBirth.isBefore(LocalDate.now().minusYears(16));
+    }
+
+    @AssertTrue(message = "Required consents must be provided")
+    public boolean
+    requirePrivacyPolicyAcceptance() {
+        return Boolean.TRUE.equals(acceptPrivacyPolicy);
+    }
+
 }
