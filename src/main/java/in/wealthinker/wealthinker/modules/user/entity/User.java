@@ -2,6 +2,7 @@ package in.wealthinker.wealthinker.modules.user.entity;
 
 import java.time.LocalDateTime;
 
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,11 +29,6 @@ import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 
 /**
@@ -92,6 +88,7 @@ public class User {
 
     @Size(max = 128, message = "Password hash too long")
     @Column(name = "password_hash")
+    @ToString.Exclude
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)

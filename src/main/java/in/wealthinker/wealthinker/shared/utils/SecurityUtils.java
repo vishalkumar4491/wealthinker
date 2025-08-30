@@ -1,7 +1,7 @@
 package in.wealthinker.wealthinker.shared.utils;
 
 
-import in.wealthinker.wealthinker.modules.auth.security.UserPrincipal;
+import in.wealthinker.wealthinker.modules.auth.security.userdetails.UserPrincipal;
 import in.wealthinker.wealthinker.shared.enums.Permission;
 import in.wealthinker.wealthinker.shared.enums.UserRole;
 import org.springframework.security.core.Authentication;

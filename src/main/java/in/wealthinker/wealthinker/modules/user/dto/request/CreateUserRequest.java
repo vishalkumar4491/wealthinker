@@ -6,9 +6,13 @@ import in.wealthinker.wealthinker.modules.user.entity.UserProfile;
 import in.wealthinker.wealthinker.shared.enums.UserRole;
 import in.wealthinker.wealthinker.shared.validation.ValidPassword;
 import jakarta.validation.constraints.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CreateUserRequest {
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")

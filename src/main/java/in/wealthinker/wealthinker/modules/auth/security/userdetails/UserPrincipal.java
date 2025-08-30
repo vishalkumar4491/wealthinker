@@ -1,4 +1,4 @@
-package in.wealthinker.wealthinker.modules.auth.security;
+package in.wealthinker.wealthinker.modules.auth.security.userdetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import in.wealthinker.wealthinker.modules.user.entity.User;
@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -38,7 +39,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserPrincipal implements UserDetails {
+public class UserPrincipal implements UserDetails, OAuth2User {
 
     // Core User Information
     private Long id;
@@ -110,7 +111,7 @@ public class UserPrincipal implements UserDetails {
 
     /**
      * Create UserPrincipal with OAuth2 attributes
-     *
+     * m
      * @param user User entity from database
      * @param attributes OAuth2 attributes from provider
      * @return UserPrincipal for OAuth2 authentication
@@ -189,16 +190,16 @@ public class UserPrincipal implements UserDetails {
 
     // =================== OAuth2User INTERFACE METHODS ===================
 
-//    @Override
-//    public Map<String, Object> getAttributes() {
-//        return attributes;
-//    }
-//
-//    @Override
-//    public String getName() {
-//        // OAuth2User expects name, we return user ID as string
-//        return String.valueOf(id);
-//    }
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    @Override
+    public String getName() {
+        // OAuth2User expects name, we return user ID as string
+        return String.valueOf(id);
+    }
 
     // =================== CUSTOM GETTER METHODS ===================
 

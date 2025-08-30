@@ -1,5 +1,8 @@
 package in.wealthinker.wealthinker.shared.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum UserStatus {
     PENDING_VERIFICATION,  // Just registered, email not verified
     ACTIVE,               // Fully active user
